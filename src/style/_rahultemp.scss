@@ -1,0 +1,237 @@
+//optional 
+
+$primary: #fe0000;
+$secbtn: #47a992;
+$sec: #eeedeb;
+$dark: #000000;
+$ter: #d8efd3;
+$light: #d8efd3;
+$gold: gold;
+$blue: darken(lightblue, 20%);
+
+* {
+  // border: 1px solid white;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  &:hover {
+    cursor: pointer;
+  }
+}
+@mixin absolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  trasnform: translateX(-50%) translateY(-50%);
+}
+// @mixin FR($a: center, $b: center) {
+//   display: flex;
+//   justify-content: $a;
+//   align-items: $b;
+// }
+// @mixin FC($a, $b) {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: $a;
+//   align-items: $b;
+// }
+@mixin flex($a: center, $b: center, $c: row) {
+  display: flex;
+  justify-content: $a;
+  align-items: $b;
+  flex-direction: $c;
+}
+%box {
+  border: 1px solid transparent;
+  // border-radius: 15px;
+}
+@mixin magicBox($col) {
+  @extend %box;
+  background: rgba($color: $col, $alpha: 0.1);
+  border-color: rgba($color: $col, $alpha: 0.1);
+  color: $col;
+}
+
+// @mixin MFD {
+//   @extend %box;
+//   background: rgba(255, 255, 255, 0.1);
+//   border-color: rgba(255, 255, 255, 0.2);
+//   color: white;
+// }
+// @mixin MFL {
+//   @extend %box;
+//   background: rgba(0, 0, 0, 0.1);
+//   border-color: rgba(0, 0, 0, 0.2);
+//   color: black;
+// }
+@mixin transition($time, $fun: ease-in-out) {
+  transition: all $fun $time;
+}
+@mixin btnhover($a, $b) {
+  &:hover {
+    color: $a;
+    border: 1px solid $a;
+    background: $b;
+    transform: scaleX(1.05);
+    border-radius: 10px;
+  }
+}
+
+@mixin Shadow($a) {
+  background: $a;
+  box-shadow: inset 9px 9px 10px #d6d5d4, inset -9px -9px 10px #ffffff;
+}
+//vars
+@mixin btn {
+  font-size: 14px;
+  @include flex;
+  padding: 5px 15px;
+  @extend %box;
+  @include transition(200ms, ease-out);
+}
+
+.btn-primary {
+  @include btn;
+  background: $primary;
+  color: $sec;
+  // border: 1px solid $sec;
+  &:hover {
+    @include btnhover($primary, $sec);
+  }
+}
+.btn-light {
+  @include btn;
+  background: $sec;
+  color: $primary;
+  // border: 1px solid $primary;
+  &:hover {
+    @include btnhover($sec, $primary);
+  }
+}
+
+a {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: clamp(10px, 1rem, 2rem);
+  @include transition(200ms, ease-in-out);
+  &:hover {
+    color: $primary;
+  }
+}
+.active {
+  border-bottom: 2px solid $primary;
+  color: $primary;
+}
+.price {
+  color: gold;
+  &::before {
+    content: "$";
+    padding: 0 2px;
+  }
+  &:hover {
+    color: $primary;
+    text-decoration: underline;
+    transform: scale(1.05);
+  }
+}
+.brand {
+  color: $dark;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: 600;
+  &::selection {
+    color: $sec;
+    background: gold;
+  }
+}
+.muted {
+  color: gray;
+  opacity: 0.6;
+  font-size: 0.7rem;
+}
+.alert {
+  @include flex(center, center, row);
+}
+// animations
+.slideintop {
+  animation: slideintop ease 1s forwards;
+  @keyframes slideintop {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0%);
+    }
+  }
+}
+.slideinleft {
+  animation: slideinleft ease-in 1s forwards;
+  @keyframes slideinleft {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+}
+.slideinright {
+  animation: slideinright ease-in 1s forwards;
+  @keyframes slideinright {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+}
+.getfit {
+  animation: getfit ease-in-out 1s 0s 1 forwards;
+  @keyframes getfit {
+    from {
+      transform: scaleX(4);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+//end
+html,
+body {
+  display: flex;
+  background: $dark;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  width: 100%;
+  height: fit-content;
+  box-sizing: border-box;
+  #root {
+    width: 100%;
+    height: fit-content;
+  }
+}
+
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
