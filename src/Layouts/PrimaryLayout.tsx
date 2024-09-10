@@ -1,33 +1,23 @@
-import { ReactNode, useEffect, useState } from "react";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import { useEffect, useState } from "react";
 
-interface LayoutProps {
-  children: ReactNode;
-}
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout = () => {
   const [addfix, setaddfix] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
       if (currentScrollY > lastScrollY) {
-        // Scrolling down
         setaddfix(false);
       } else {
-        // Scrolling up
         setaddfix(true);
       }
-
       setLastScrollY(currentScrollY);
     };
-
     window.addEventListener("scroll", handleScroll);
-
-    // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -36,24 +26,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <header
-        className={`${
-          addfix ? "fixed top-0" : "relative"
-        } w-full h-auto bg-black sm:px-7`}
+        className={`${addfix ? "fixed top-0" : "relative"} w-full h-auto ${
+          lastScrollY === 0 ? "" : ""
+        } backdrop-blur-0 z-[1000]`}
       >
         <Navbar />
       </header>
       <main
-        className={`sm:px-7 px-5 h-[200vh] ${
-          addfix ? "mt-[9vh] sm:mt-[15vh]" : ""
-        }`}
+        id="mainDiv"
+        className={` sm:px-0 px-3 sm:pt-24 h-auto overflow-x-hidden z-[10]`}
       >
-        {children}
+        <Outlet />
       </main>
-      <footer>
-        <Footer />
-      </footer>
+      <footer>footer</footer>
     </>
   );
 };
 
+// Export the Layout component
 export default Layout;
